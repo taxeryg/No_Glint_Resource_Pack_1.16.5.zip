@@ -22,7 +22,7 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3002; // RENDER İÇİN ZORUNLU!
-const CLIENT_URL = process.env.CLIENT_URL || "https://k7-frontend.vercel.app"; // BURAYI DEĞİŞTİR!
+const CLIENT_URL = process.env.CLIENT_URL || "https://karahanbest.netlify.app"; // BURAYI DEĞİŞTİR!
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
