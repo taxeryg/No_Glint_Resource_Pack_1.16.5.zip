@@ -1,0 +1,72 @@
+body {
+  font-family: 'Poppins', sans-serif;
+  background: url('/karahanbackground.PNG') no-repeat center 20% fixed;
+  background-size: cover;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  
+}
+
+.form-container {
+  background: rgba(0, 0, 0, 0.6);
+  padding: 40px;
+  margin: 300px 700px;
+  border-radius: 16px;
+  text-align: center;
+  width: 300px;
+  display:center;
+}
+
+input {
+  display: block;
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  background: linear-gradient(to right, #ff416c, #ff4b2b);
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+a {
+  color: #00ff37;
+  text-decoration: underline;
+  text-decoration-color: #e100ff;
+  text-underline-offset: 4px;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+a:hover {
+  color: #ffffff;
+  text-decoration-color: #ff4b2b;
+}
+.form-message {
+  color: #ff0000;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+#root, .host-screen {
+    width: 100%;
+    height: 100%;
+}

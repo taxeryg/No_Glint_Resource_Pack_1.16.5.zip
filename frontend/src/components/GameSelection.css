@@ -1,0 +1,156 @@
+/* ...existing code... */
+/* GameSelection.css */
+
+/* Sayfa ve body ayarları */
+body, html {
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* scroll barları kaldırır */
+  font-family: Arial, sans-serif;
+}
+
+.game-selection {
+  height: 100vh;
+  width: 100vw;
+  background-color: black;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Üst bar */
+.top-bar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 40px;
+  background-color: #111;
+}
+
+/* Başlık ortada */
+.top-bar h1 {
+  margin: 0;
+  font-size: 24px;
+  text-align: center;
+  flex-grow: 1;
+}
+
+/* Ortak ikon stili */
+.icon {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+}
+
+/* Market simgesi sol üst */
+.market {
+  width: 60px;
+  height: 60px;
+  margin-left: 40px;
+}
+
+/* Profil container sağ üst */
+.profile-container {
+  position: relative;
+  margin-right: 40px;
+}
+
+/* Profil simgesi */
+.profile {
+  width: 60px;
+  height: 60px;
+}
+
+/* Profil menüsü */
+.profile-menu {
+  position: absolute;
+  top: 70px;
+  right: 0;
+  background-color: #222;
+  border: 1px solid #555;
+  border-radius: 5px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+}
+
+.profile-menu p {
+  margin: 5px 0;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.profile-menu p:hover {
+  color: #ff416c;
+}
+
+/* Oyun logoları */
+.games {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  gap: 50px;
+}
+
+.game-logo {
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+  cursor: default;
+  transition: transform 0.3s;
+}
+
+.game-logo:hover {
+  transform: scale(1.1);
+}
+
+/* Profil görüntüleme ekranı (YENİ BOYUTLAR) */
+.profile-view {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #111;
+  border: 2px solid #ff416c;
+  border-radius: 10px;
+
+  /* Büyütme için eklenen stiller */
+  width: 400px;
+  max-width: 90vw;
+  padding: 30px 40px;
+
+  text-align: center;
+  z-index: 200;
+}
+
+.profile-avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  margin: 10px 0;
+}
+
+.profile-view p {
+  font-size: 18px;
+  margin: 5px 0;
+  color: #ff416c;
+}
+
+.profile-view button {
+  margin-top: 10px;
+  padding: 5px 10px;
+  background-color: #ff416c;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+}
+
+.profile-view button:hover {
+  background-color: #ff1c5c;
+}
+/* ...existing code... */
