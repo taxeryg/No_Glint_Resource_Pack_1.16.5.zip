@@ -11,6 +11,8 @@ interface ErrorResponse {
     message?: string;
 }
 
+const API_URL = (import.meta.env.VITE_API_URL as string) || "http://localhost:3002";
+
 const Register: React.FC = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -35,17 +37,17 @@ const Register: React.FC = () => {
         setIsLoading(true);
 
         try {
-            const res = await axios.post<RegisterResponse>("http://localhost:3002/register", { username, password });
-            
+            const res = await axios.post<RegisterResponse>(`${API_URL}/register`, { username, password });
+
             if (res.data.success) {
                 setMessage("Kayıt başarılı! Yönlendiriliyorsunuz...");
-                setTimeout(() => navigate("/"), 1500); 
+                setTimeout(() => navigate("/"), 1500);
             } else {
                 setMessage(res.data.message || "Kullanıcı zaten var veya kayıt başarısız!");
             }
         } catch (err) {
             // Hata tipini ErrorResponse'u içerecek şekilde belirttik (TypeScript hatası çözüldü)
-            const axiosError = err as AxiosError<ErrorResponse>; 
+            const axiosError = err as AxiosError<ErrorResponse>;
 
             if (axiosError.response) {
                 const errorMessage = axiosError.response.data?.message || "Kayıt sırasında hata oluştu.";

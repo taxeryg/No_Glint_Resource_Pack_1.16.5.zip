@@ -3,7 +3,9 @@ import { useNavigate } from "react-router-dom";
 import io, { Socket } from "socket.io-client";
 import './HostScreen.css';
 
-const SOCKET_SERVER_URL = "https://karahanbest.netlify.app";
+// Use Vite env var for production socket server URL (set this in Netlify as
+// VITE_API_URL). Falls back to localhost for local dev.
+const SOCKET_SERVER_URL = (import.meta.env.VITE_API_URL as string) || "http://localhost:3002";
 
 interface Player {
     id: number;
@@ -29,7 +31,7 @@ const HostScreen: React.FC = () => {
     const playSound = useCallback((sound: "apple" | "gun" | "death") => {
         const audio = new Audio(`/sounds/${sound}.mp3`);
         audio.volume = 0.75;
-        audio.play().catch(() => {}); // tarayıcı engellerse sessiz kalır
+        audio.play().catch(() => { }); // tarayıcı engellerse sessiz kalır
     }, []);
 
     const getRandomIcon = (): "apple" | "gun" | "skull" => {
@@ -110,7 +112,7 @@ const HostScreen: React.FC = () => {
                     }
 
                     if (icon === "gun") {
-                        fetch("http://localhost:3001/api/trigger-gun", {
+                        fetch(`${SOCKET_SERVER_URL}/api/trigger-gun`, {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({ playerId: p.id })
@@ -122,7 +124,7 @@ const HostScreen: React.FC = () => {
                     }
 
                     const mesaj = icon === "apple" ? "Elma çıktı! +1 can" :
-                                 icon === "skull" ? "KAFATASI! -1 can" : "";
+                        icon === "skull" ? "KAFATASI! -1 can" : "";
                     setNotification(`${p.username} → ${num} açıldı! ${mesaj}`);
                     setTimeout(() => setNotification(null), 4000);
                     return { ...p, lives: newLives };
@@ -191,7 +193,7 @@ const HostScreen: React.FC = () => {
                     <h3>Katılan Oyuncular ({players.length})</h3>
                     <div className="player-list-grid small">
                         {players.map(p => (
-                            <div key={p.id} className="player-item-compact" style={{ 
+                            <div key={p.id} className="player-item-compact" style={{
                                 backgroundColor: p.color,
                                 opacity: p.lives > 0 ? 1 : 0.4,
                                 filter: p.lives > 0 ? "none" : "grayscale(100%)"

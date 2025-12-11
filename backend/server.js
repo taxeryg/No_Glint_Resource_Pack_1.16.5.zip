@@ -22,7 +22,7 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3002; // RENDER İÇİN ZORUNLU!
-const CLIENT_URL = process.env.CLIENT_URL || "https://karahanbest.netlify.app"; // BURAYI DEĞİŞTİR!
+const CLIENT_URL = process.env.CLIENT_URL || "https://karahanbest.netlify.app"; // Frontend adresi
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -42,13 +42,26 @@ let usersCollection;
 
 function initializeFirebase() {
     try {
-        const serviceAccount = require(path.join(__dirname, 'firebase-adminsdk.json'));
+        let serviceAccount;
+
+        // 1. Önce Render/Environment Variable kontrol et
+        if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+            // Render'da JSON içeriğini string olarak saklayacağız, burada parse ediyoruz
+            serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+            console.log("Firebase config Environment Variable üzerinden alındı.");
+        } else {
+            // 2. Yoksa yerel dosyadan oku (Localhost için)
+            serviceAccount = require(path.join(__dirname, 'firebase-adminsdk.json'));
+            console.log("Firebase config yerel dosyadan alındı.");
+        }
+
         initializeApp({ credential: cert(serviceAccount) });
         db = getFirestore();
         usersCollection = db.collection('users');
-        console.log("Firebase bağlandı");
+        console.log("Firebase veritabanı bağlandı");
     } catch (err) {
         console.error("Firebase başlatılamadı:", err.message);
+        console.error("HATA İPUCU: Eğer Render'daysanız 'FIREBASE_SERVICE_ACCOUNT' environment variable'ını eklediniz mi?");
     }
 }
 initializeFirebase();

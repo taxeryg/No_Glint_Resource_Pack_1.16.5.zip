@@ -10,8 +10,10 @@ type UserRole = "owner" | "yayıncı" | "oyuncu";
 interface UserManagementProps {
     onClose: () => void;
     // Hata buradan kaynaklanıyordu, artık TypeScript bu prop'u tanıyacak
-    onRoleUpdated: (newRole: UserRole) => void; 
+    onRoleUpdated: (newRole: UserRole) => void;
 }
+
+const API_URL = (import.meta.env.VITE_API_URL as string) || "http://localhost:3002";
 
 const UserManagementView: React.FC<UserManagementProps> = ({ onClose, onRoleUpdated }) => {
     const [targetUser, setTargetUser] = useState('');
@@ -25,7 +27,7 @@ const UserManagementView: React.FC<UserManagementProps> = ({ onClose, onRoleUpda
             setMessage("Yetkilendirme hatası: Token bulunamadı.");
             return;
         }
-        
+
         if (!targetUser) {
             setMessage("Lütfen güncellenecek kullanıcı adını girin.");
             return;
@@ -36,7 +38,7 @@ const UserManagementView: React.FC<UserManagementProps> = ({ onClose, onRoleUpda
 
         try {
             // Backend'deki role güncelleme endpoint'iniz (Bu endpoint server.js'de tanımlı olmalı)
-            const res = await axios.post('http://localhost:3002/update-user-role', {
+            const res = await axios.post(`${API_URL}/update-user-role`, {
                 targetUsername: targetUser,
                 role: newRole,
             }, {
@@ -45,7 +47,7 @@ const UserManagementView: React.FC<UserManagementProps> = ({ onClose, onRoleUpda
 
             if (res.data.success) {
                 setMessage(`Kullanıcı ${targetUser} rolü başarıyla ${newRole} olarak güncellendi!`);
-                
+
                 // Eğer güncellediğiniz rol KENDİ ROLÜNÜZ ise, ANA COMPONENT'i bilgilendirin.
                 const currentUsername = localStorage.getItem('username');
                 if (targetUser === currentUsername) {
@@ -56,7 +58,7 @@ const UserManagementView: React.FC<UserManagementProps> = ({ onClose, onRoleUpda
             }
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
-                 setMessage(error.response.data.message || 'Sunucudan hata yanıtı alındı.');
+                setMessage(error.response.data.message || 'Sunucudan hata yanıtı alındı.');
             } else {
                 setMessage('Rol güncelleme sırasında beklenmedik bir hata oluştu.');
             }
@@ -69,7 +71,7 @@ const UserManagementView: React.FC<UserManagementProps> = ({ onClose, onRoleUpda
     return (
         <div className="profile-view user-management-view">
             <h2>Kullanıcı Yönetimi</h2>
-            
+
             <input
                 placeholder="Hedef Kullanıcı Adı"
                 value={targetUser}
@@ -86,13 +88,13 @@ const UserManagementView: React.FC<UserManagementProps> = ({ onClose, onRoleUpda
                 <option value="yayıncı">Yayıncı</option>
                 <option value="owner">Owner</option>
             </select>
-            
+
             <button onClick={handleUpdateRole} disabled={isLoading}>
                 {isLoading ? "Güncelleniyor..." : "Rolü Güncelle"}
             </button>
-            
+
             {message && <p className="management-message">{message}</p>}
-            
+
             <button onClick={onClose} disabled={isLoading}>
                 Kapat
             </button>

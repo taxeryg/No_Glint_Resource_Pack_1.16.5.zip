@@ -23,7 +23,7 @@ import UserManagementView from "./UserManagementView";
 
 type UserRole = "owner" | "yayıncı" | "oyuncu";
 
-
+const API_URL = (import.meta.env.VITE_API_URL as string) || "http://localhost:3002";
 
 const GameSelection: React.FC = () => {
 
@@ -33,7 +33,7 @@ const GameSelection: React.FC = () => {
 
     const [viewManagement, setViewManagement] = useState(false);
 
-   
+
 
     const [userRole, setUserRole] = useState<UserRole>("oyuncu");
 
@@ -47,7 +47,7 @@ const GameSelection: React.FC = () => {
 
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-   
+
 
     const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -69,7 +69,7 @@ const GameSelection: React.FC = () => {
 
         if (storedUsername) setCurrentUsername(storedUsername);
 
-       
+
 
         if (storedRole && ["owner", "yayıncı", "oyuncu"].includes(storedRole)) {
 
@@ -89,7 +89,7 @@ const GameSelection: React.FC = () => {
 
         } else {
 
-             setAvatar(profileIcon);
+            setAvatar(profileIcon);
 
         }
 
@@ -127,9 +127,9 @@ const GameSelection: React.FC = () => {
 
         localStorage.removeItem("avatar");
 
-        localStorage.removeItem("score");    
+        localStorage.removeItem("score");
 
-       
+
 
         setCurrentUsername("Misafir");
 
@@ -139,7 +139,7 @@ const GameSelection: React.FC = () => {
 
         setScore(0);
 
-       
+
 
         navigate("/", { replace: true });
 
@@ -151,63 +151,63 @@ const GameSelection: React.FC = () => {
 
         if (e.target.files && e.target.files[0]) {
 
-          const file = e.target.files[0];
+            const file = e.target.files[0];
 
-          const reader = new FileReader();
-
-         
-
-          reader.onload = async () => {
-
-            if (typeof reader.result === 'string') {
-
-              const newAvatar = reader.result;
-
-             
-
-              setAvatar(newAvatar);
-
-              localStorage.setItem("avatar", newAvatar);
+            const reader = new FileReader();
 
 
 
-              const token = localStorage.getItem("token");
+            reader.onload = async () => {
 
-              if (token) {
+                if (typeof reader.result === 'string') {
 
-                  try {
+                    const newAvatar = reader.result;
 
-                      // Hata: alert() yerine custom modal kullanın. Şimdilik konsola yazalım.
 
-                      await axios.post("https://karahanbest.netlify.app/update-avatar",
 
-                          { newAvatarPath: newAvatar },
+                    setAvatar(newAvatar);
 
-                          { headers: { 'Authorization': `Bearer ${token}` } }
+                    localStorage.setItem("avatar", newAvatar);
 
-                      );
 
-                  } catch (error) {
 
-                      console.error("Avatar Backend kaydı başarısız:", error);
+                    const token = localStorage.getItem("token");
 
-                      // Custom modal/message box çağrısı buraya gelmeli.
+                    if (token) {
 
-                  }
+                        try {
 
-              } else {
+                            // Hata: alert() yerine custom modal kullanın. Şimdilik konsola yazalım.
 
-                  console.log("Lütfen önce giriş yapın.");
+                            await axios.post(`${API_URL}/update-avatar`,
 
-                  // Custom modal/message box çağrısı buraya gelmeli.
+                                { newAvatarPath: newAvatar },
 
-              }
+                                { headers: { 'Authorization': `Bearer ${token}` } }
 
-            }
+                            );
 
-          };
+                        } catch (error) {
 
-          reader.readAsDataURL(file);
+                            console.error("Avatar Backend kaydı başarısız:", error);
+
+                            // Custom modal/message box çağrısı buraya gelmeli.
+
+                        }
+
+                    } else {
+
+                        console.log("Lütfen önce giriş yapın.");
+
+                        // Custom modal/message box çağrısı buraya gelmeli.
+
+                    }
+
+                }
+
+            };
+
+            reader.readAsDataURL(file);
 
         }
 
@@ -223,7 +223,7 @@ const GameSelection: React.FC = () => {
 
     }, []);
 
-     
+
 
     // 🚀 OYUN TIKLAMA FONKSİYONU
 
@@ -245,7 +245,7 @@ const GameSelection: React.FC = () => {
 
             setErrorMessage("Üzgünüz! Bu oyunu yalnızca Yayıncılar ve Ownerlar oynayabilir.");
 
-           
+
 
             setTimeout(() => {
 
@@ -293,7 +293,7 @@ const GameSelection: React.FC = () => {
 
                             <p onClick={() => { setViewProfile(true); setProfileOpen(false); }}>Profili Görüntüle</p>
 
-                           
+
 
                             {userRole === "owner" && (
 
@@ -311,7 +311,7 @@ const GameSelection: React.FC = () => {
 
                             )}
 
-                           
+
 
                             <p onClick={triggerAvatarInput}>
 
@@ -375,7 +375,7 @@ const GameSelection: React.FC = () => {
 
             )}
 
-           
+
 
             {/* Profil Görüntüleme */}
 
